@@ -1,0 +1,17 @@
+# Copy to terraform.tfvars for local use. Do not commit terraform.tfvars.
+
+subscription_id = "00000000-0000-0000-0000-000000000000"
+location        = "canadacentral"
+environment     = "validation"
+owner           = "alexcgodwin"
+
+# Production reference posture
+private_cluster_enabled = true
+
+# Disabled during low-cost validation unless a separate workload pool is required.
+enable_user_node_pool = false
+
+# Purge protection is normally enabled for long-lived production Key Vaults.
+# It is false here so the disposable validation environment can be removed cleanly.
+key_vault_purge_protection = false
+purge_key_vault_on_destroy = true
