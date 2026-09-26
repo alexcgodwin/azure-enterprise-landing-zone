@@ -8,6 +8,9 @@ owner           = "alexcgodwin"
 # Production reference posture
 private_cluster_enabled = true
 
+# Free Trial validation stays within the current 4-vCPU DSv5 quota.
+system_node_max_count = 2
+
 # Disabled during low-cost validation unless a separate workload pool is required.
 enable_user_node_pool = false
 

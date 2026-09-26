@@ -16,9 +16,15 @@ resource "azurerm_kubernetes_cluster" "platform" {
     vnet_subnet_id               = azurerm_subnet.aks.id
     auto_scaling_enabled         = true
     min_count                    = 1
-    max_count                    = 3
-    only_critical_addons_enabled = true
+    max_count                    = var.system_node_max_count
+    only_critical_addons_enabled = var.enable_user_node_pool
     os_disk_type                 = "Managed"
+
+    upgrade_settings {
+      drain_timeout_in_minutes      = 0
+      max_surge                     = "10%"
+      node_soak_duration_in_minutes = 0
+    }
   }
 
   identity {
@@ -73,10 +79,11 @@ resource "azurerm_role_assignment" "aks_acr_pull" {
 }
 
 resource "azurerm_federated_identity_credential" "workload" {
-  name                = "${local.name_prefix}-workload-fic"
-  resource_group_name = azurerm_resource_group.workload.name
-  audience            = ["api://AzureADTokenExchange"]
-  issuer              = azurerm_kubernetes_cluster.platform.oidc_issuer_url
-  parent_id           = azurerm_user_assigned_identity.workload.id
-  subject             = "system:serviceaccount:platform-demo:workload-identity"
+  name                      = "${local.name_prefix}-workload-fic"
+  audience                  = ["api://AzureADTokenExchange"]
+  issuer                    = azurerm_kubernetes_cluster.platform.oidc_issuer_url
+  user_assigned_identity_id = azurerm_user_assigned_identity.workload.id
+  subject                   = "system:serviceaccount:platform-demo:workload-identity"
 }
+
+

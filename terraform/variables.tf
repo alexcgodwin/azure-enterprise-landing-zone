@@ -44,6 +44,17 @@ variable "system_node_vm_size" {
   default     = "Standard_D2s_v5"
 }
 
+variable "system_node_max_count" {
+  description = "Maximum autoscaled system nodes. Set to 2 for Free Trial validation with a 4-vCPU DSv5 quota."
+  type        = number
+  default     = 3
+
+  validation {
+    condition     = var.system_node_max_count >= 1 && var.system_node_max_count <= 10
+    error_message = "system_node_max_count must be between 1 and 10."
+  }
+}
+
 variable "user_node_vm_size" {
   description = "VM size for the optional user node pool."
   type        = string
