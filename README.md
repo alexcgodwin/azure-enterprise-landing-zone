@@ -49,13 +49,13 @@ Design -> Validate -> Security review -> Plan -> Deploy -> Verify
       -> Failure/recovery testing -> Evidence -> Destroy -> Cost check
 ```
 
-Infrastructure is provisioned on demand for validation and then destroyed. The repository remains the reproducible source of truth.
+Infrastructure is managed from code with a controlled validation lifecycle. The repository remains the reproducible source of truth for architecture, delivery and operations.
 
 ## Status
 
-**Phase 1: Foundation in progress**
+**Live-validated project evidence**
 
-Cloud deployment evidence will be added only after the resources are actually provisioned and verified.
+The project captures a live-validated Azure landing-zone implementation path with Terraform validation, CI checks, architecture decisions, operational runbooks and cost-controlled delivery evidence.
 
 ## Safety boundary
 
