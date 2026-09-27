@@ -1,62 +1,41 @@
 # Azure Enterprise Landing Zone
 
-A production-oriented Azure application landing zone built with Terraform. It shows how a platform team can give application teams a governed, secure, observable and repeatable Azure foundation without relying on manual portal configuration.
+A production-oriented Azure platform foundation built with Terraform. It demonstrates governed networking, identity, security, observability and Kubernetes capabilities through repeatable infrastructure delivery.
 
-## What this project demonstrates
+## What I Built
 
-- Hub-and-spoke virtual networking
-- Azure Kubernetes Service (AKS)
-- Azure Container Registry (ACR)
-- Microsoft Entra integrated access
-- AKS workload identity and OIDC
-- Azure Key Vault
-- Azure Monitor and Log Analytics
-- Azure Policy integration for AKS
-- Terraform-based infrastructure delivery
-- GitHub Actions validation and OIDC-ready deployment
-- Environment isolation and consistent tagging
-- Cost-aware validation and clean teardown
-- Architecture decisions, operational runbooks and deployment evidence
+- Hub-and-spoke networking with separated platform and workload responsibilities.
+- AKS, ACR, Microsoft Entra access, workload identity, Key Vault and monitoring.
+- Terraform modules, GitHub Actions validation and OIDC-ready cloud access.
+- Architecture decisions, operational notes, validation evidence and cost controls.
 
-## Architecture
+## Delivery Workflow
 
-```text
-GitHub -> OIDC -> Microsoft Entra ID -> Azure Subscription
-                                      |
-                                      +-- Hub Resource Group
-                                      |    +-- Hub VNet
-                                      |
-                                      +-- Workload Resource Group
-                                           +-- Spoke VNet
-                                           |    +-- AKS subnet
-                                           |    +-- Private endpoint subnet
-                                           +-- AKS
-                                           |    +-- Entra RBAC
-                                           |    +-- Workload Identity
-                                           |    +-- Azure CNI Overlay
-                                           |    +-- Autoscaling
-                                           +-- ACR
-                                           +-- Key Vault
-                                           +-- Log Analytics
+1. Define the foundation as versioned Terraform.
+2. Run formatting, validation and security-oriented checks.
+3. Review identity, network, secrets and monitoring boundaries.
+4. Provision and verify the platform capabilities.
+5. Capture evidence and remove validation resources when complete.
+
+## Repository Structure
+
+| Path | Purpose |
+| --- | --- |
+| `terraform/` | Landing-zone modules and environment configuration. |
+| `modules/` | Reusable infrastructure components. |
+| `docs/` | Architecture decisions and runbooks. |
+| `scripts/` | Validation and deployment helpers. |
+
+## Validation
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/validate.ps1
 ```
 
-The initial deployment deliberately avoids high-cost always-on components such as Azure Firewall and Application Gateway. Those controls are documented as production expansion points instead of being left running only for portfolio evidence.
+## Completed Result
 
-## Deployment lifecycle
+A live-validated, reviewable Azure foundation with CI checks, identity and security controls, operating evidence and cost-aware delivery. It is isolated from OpsChugex production.
 
-```text
-Design -> Validate -> Security review -> Plan -> Deploy -> Verify
-      -> Failure/recovery testing -> Evidence -> Destroy -> Cost check
-```
+## Engineering Value
 
-Infrastructure is managed from code with a controlled validation lifecycle. The repository remains the reproducible source of truth for architecture, delivery and operations.
-
-## Status
-
-**Live-validated project evidence**
-
-The project captures a live-validated Azure landing-zone implementation path with Terraform validation, CI checks, architecture decisions, operational runbooks and cost-controlled delivery evidence.
-
-## Safety boundary
-
-This project is isolated from the existing OpsChugex production environment. It does not modify or depend on the Lightsail instance that currently hosts the live website and application.
+This project demonstrates platform ownership, governance, repeatability, security boundaries and evidence-led cloud delivery.
