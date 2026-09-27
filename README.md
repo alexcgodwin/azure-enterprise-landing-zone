@@ -32,6 +32,19 @@ A production-oriented Azure platform foundation built with Terraform. It demonst
 powershell -ExecutionPolicy Bypass -File scripts/validate.ps1
 ```
 
+## Engineering Controls
+
+| Control | Senior engineering concern |
+| --- | --- |
+| Identity | Entra, RBAC, workload identity and OIDC boundaries. |
+| Delivery | Reviewable Terraform with repeatable validation. |
+| Operations | Monitoring, logs, runbooks and evidence capture. |
+| Cost | Controlled validation, teardown and production expansion points. |
+
+## Failure and Review Model
+
+The design considers invalid configuration, identity failure, policy drift, unavailable dependencies and unnecessary resource exposure. Each risk has a validation point and a documented production extension.
+
 ## Completed Result
 
 A live-validated, reviewable Azure foundation with CI checks, identity and security controls, operating evidence and cost-aware delivery. It is isolated from OpsChugex production.
