@@ -1,54 +1,78 @@
 # Azure Enterprise Landing Zone
 
-A production-oriented Azure platform foundation built with Terraform. It demonstrates governed networking, identity, security, observability and Kubernetes capabilities through repeatable infrastructure delivery.
+A production-oriented Azure application landing zone built with Terraform. The project shows how a platform team can provide governed cloud foundations for application teams without relying on manual portal configuration.
 
-## What I Built
+![Azure landing zone architecture](assets/architecture.svg)
 
-- Hub-and-spoke networking with separated platform and workload responsibilities.
-- AKS, ACR, Microsoft Entra access, workload identity, Key Vault and monitoring.
-- Terraform modules, GitHub Actions validation and OIDC-ready cloud access.
-- Architecture decisions, operational notes, validation evidence and cost controls.
+## Executive Summary
 
-## Delivery Workflow
+This repository models a controlled Azure landing zone for regulated application delivery. It brings together network segmentation, AKS, ACR, Key Vault, Entra-integrated access, policy guardrails, observability, CI validation and cost-controlled teardown.
 
-1. Define the foundation as versioned Terraform.
-2. Run formatting, validation and security-oriented checks.
-3. Review identity, network, secrets and monitoring boundaries.
-4. Provision and verify the platform capabilities.
-5. Capture evidence and remove validation resources when complete.
+The project was validated live, documented with evidence, and then destroyed through Terraform to keep spend controlled. The repo remains the reproducible source of truth.
 
-## Repository Structure
+## Engineering Scope
+
+| Area | Implementation |
+| --- | --- |
+| Cloud foundation | Hub-and-spoke network, workload resource group, environment tagging |
+| Runtime | Azure Kubernetes Service with Azure CNI overlay and autoscaling |
+| Supply path | Azure Container Registry for controlled image publishing |
+| Identity | Microsoft Entra integration, OIDC-ready delivery, workload identity pattern |
+| Secrets | Azure Key Vault boundary for application and platform secrets |
+| Guardrails | Azure Policy thinking for AKS and platform governance |
+| Operations | Log Analytics, diagnostics, evidence notes and teardown runbook |
+| Cost control | No always-on firewall or gateway tier for portfolio validation; documented expansion path |
+
+## Architecture
+
+The architecture separates delivery identity, network foundation, workload runtime, secret management and operational evidence.
+
+![Delivery workflow](assets/delivery-workflow.svg)
+
+## Repository Map
 
 | Path | Purpose |
 | --- | --- |
-| `terraform/` | Landing-zone modules and environment configuration. |
-| `modules/` | Reusable infrastructure components. |
-| `docs/` | Architecture decisions and runbooks. |
-| `scripts/` | Validation and deployment helpers. |
+| `terraform/` | Azure landing-zone infrastructure modules and environment inputs |
+| `.github/workflows/` | Terraform validation and plan workflow structure |
+| `docs/architecture.md` | Architecture notes and production expansion path |
+| `docs/security.md` | Security controls, trust boundaries and hardening decisions |
+| `docs/cost-control.md` | Cost-control model and teardown strategy |
+| `docs/evidence/` | Validation and destroy evidence |
+| `docs/runbooks/` | Operating runbooks |
 
-## Validation
+## Validation Model
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts/validate.ps1
+cd terraform
+terraform fmt -check
+terraform validate
+terraform plan
+terraform apply
+terraform destroy
 ```
 
-## Engineering Controls
+The workflow is designed around repeatable proof: code review, Terraform validation, live deployment, resource verification, evidence capture and controlled destroy.
 
-| Control | Senior engineering concern |
-| --- | --- |
-| Identity | Entra, RBAC, workload identity and OIDC boundaries. |
-| Delivery | Reviewable Terraform with repeatable validation. |
-| Operations | Monitoring, logs, runbooks and evidence capture. |
-| Cost | Controlled validation, teardown and production expansion points. |
+## Production Expansion Path
 
-## Failure and Review Model
+For a production tenant, the next controls would be added deliberately:
 
-The design considers invalid configuration, identity failure, policy drift, unavailable dependencies and unnecessary resource exposure. Each risk has a validation point and a documented production extension.
+- Azure Firewall or managed network egress with cost approval.
+- Private DNS integration for private endpoints.
+- Application Gateway or ingress controller with WAF controls.
+- Remote state in a locked storage account with RBAC and soft delete.
+- Azure Policy assignments enforced at management group or subscription scope.
+- Defender for Cloud recommendations reviewed as an operating process.
 
-## Completed Result
+## Interview Defense
 
-A live-validated, reviewable Azure foundation with CI checks, identity and security controls, operating evidence and cost-aware delivery. It is isolated from OpsChugex production.
+This project is not a toy AKS deployment. The important engineering value is the boundary design: identity, delivery, network, runtime, secrets, observability, policy and teardown are treated as one platform lifecycle. The cost choices are intentional and documented, not missing work.
 
-## Engineering Value
+## Status
 
-This project demonstrates platform ownership, governance, repeatability, security boundaries and evidence-led cloud delivery.
+Live-validated project evidence. Infrastructure was deployed for validation, documented, then destroyed through Terraform to keep cost exposure controlled.
+
+## Safety Boundary
+
+This project is isolated from OpsChugex production. It does not modify or depend on the Lightsail instance hosting the live website and application.
