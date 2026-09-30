@@ -65,9 +65,24 @@ For a production tenant, the next controls would be added deliberately:
 - Azure Policy assignments enforced at management group or subscription scope.
 - Defender for Cloud recommendations reviewed as an operating process.
 
-## Interview Defense
+## Evidence Index
 
-This project is not a toy AKS deployment. The important engineering value is the boundary design: identity, delivery, network, runtime, secrets, observability, policy and teardown are treated as one platform lifecycle. The cost choices are intentional and documented, not missing work.
+- Network foundation: `terraform/network.tf`
+- AKS platform: `terraform/aks.tf`
+- Identity and security: `terraform/security.tf`
+- Observability: `terraform/observability.tf`
+- Security model: `docs/security.md`
+- Cost-control strategy: `docs/cost-control.md`
+- Architecture decision: `docs/decisions/ADR-001-isolated-project-boundary.md`
+- Validation and teardown evidence: `docs/evidence/`
+
+## Engineering Rationale
+
+The engineering value is the boundary design: identity, delivery, network, runtime, secrets, observability, policy and teardown are treated as one platform lifecycle. Cost choices are explicit design decisions and are documented alongside the production expansion path.
+
+## Tradeoffs and Boundaries
+
+The project prioritizes a governed, reviewable landing-zone foundation over keeping a permanent Azure estate online. Temporary validation resources can be removed without losing the Terraform, decisions, CI controls or evidence. The design does not imply that every enterprise service or premium network control belongs in every environment.
 
 ## Status
 
